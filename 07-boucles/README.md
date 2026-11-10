@@ -8,13 +8,13 @@
 - parcourir un tableau avec `foreach`, avec ou sans clé ;
 - lire les avertissements d'un `foreach` appliqué à une variable absente.
 
-Prérequis : les chapitres 3, 4 et 5. Créez un dossier `tp06` et placez votre terminal dedans.
+Prérequis : les chapitres 4, 5 et 6. Créez un dossier `tp07` et placez votre terminal dedans.
 
 ## Répéter tant qu'une condition est vraie : while
 
 Une **boucle** répète un bloc d'instructions. Chaque répétition s'appelle une **itération**. La boucle `while` (« tant que ») répète son bloc tant que sa condition est vraie.
 
-Dans `tp06`, créez un fichier `boucle.php` :
+Dans `tp07`, créez un fichier `boucle.php` :
 
 ```php
 <?php
@@ -29,7 +29,7 @@ while ($x < 5) {
 - Ligne 2 : `$x` vaut 1 au départ.
 - Ligne 3 : `while ($x < 5) {` teste la condition avant chaque itération. Tant qu'elle est vraie, PHP exécute le bloc.
 - Ligne 4 : affiche la valeur de `$x`.
-- Ligne 5 : `$x++` ajoute 1 à `$x` (chapitre 3). Sans cette ligne, la condition resterait vraie pour toujours.
+- Ligne 5 : `$x++` ajoute 1 à `$x` (chapitre 4). Sans cette ligne, la condition resterait vraie pour toujours.
 
 **Prédisez** combien de lignes le script va afficher, et lesquelles, puis exécutez `php boucle.php`.
 
@@ -224,13 +224,13 @@ foreach ($couleur as $valeur) {
 Vous devez voir :
 
 ```text
-PHP Warning:  Undefined variable $couleur in …/tp06/parcourir.php on line 3
-PHP Warning:  foreach() argument must be of type array|object, null given in …/tp06/parcourir.php on line 3
+PHP Warning:  Undefined variable $couleur in …/tp07/parcourir.php on line 3
+PHP Warning:  foreach() argument must be of type array|object, null given in …/tp07/parcourir.php on line 3
 ```
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine. Lisez les deux messages, qui portent sur la même ligne 3 :
 
-- `Undefined variable $couleur` : la variable `$couleur` n'existe pas, comme au chapitre 2. C'est la cause.
+- `Undefined variable $couleur` : la variable `$couleur` n'existe pas, comme au chapitre 3. C'est la cause.
 - `foreach() argument must be of type array|object, null given` : `foreach` attend un tableau (ou un objet), et reçoit `null`, la valeur d'une variable qui n'existe pas. C'est la conséquence : le bloc n'est pas exécuté.
 
 > [!WARNING]

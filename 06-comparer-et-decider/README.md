@@ -8,11 +8,11 @@
 - choisir entre plusieurs cas avec `switch`, ou en une ligne avec `?:` ;
 - lire l'erreur « Unclosed '{' ».
 
-Prérequis : les chapitres 2 et 3. Créez un dossier `tp05` et placez votre terminal dedans.
+Prérequis : les chapitres 3 et 4. Créez un dossier `tp06` et placez votre terminal dedans.
 
 ## Comparer deux valeurs
 
-Une **condition** est une question dont la réponse est vraie ou fausse : un booléen, comme au chapitre 2. On la pose avec un **opérateur de comparaison**.
+Une **condition** est une question dont la réponse est vraie ou fausse : un booléen, comme au chapitre 3. On la pose avec un **opérateur de comparaison**.
 
 | Opérateur | Nom | La condition est vraie si… |
 | --- | --- | --- |
@@ -25,7 +25,7 @@ Une **condition** est une question dont la réponse est vraie ou fausse : un bo
 | `>=` | plus grand ou égal | la valeur de gauche est supérieure ou égale |
 | `<=` | plus petit ou égal | la valeur de gauche est inférieure ou égale |
 
-Dans `tp05`, créez un fichier `comparaisons.php` :
+Dans `tp06`, créez un fichier `comparaisons.php` :
 
 ```php
 <?php
@@ -207,14 +207,14 @@ if ($a > $b) {
 Vous devez voir :
 
 ```text
-PHP Parse error:  Unclosed '{' on line 8 in …/tp05/decision.php on line 11
+PHP Parse error:  Unclosed '{' on line 8 in …/tp06/decision.php on line 11
 ```
 
 Lisez le message :
 
 - `Parse error` : erreur d'analyse, comme au chapitre 1. Aucun texte n'est affiché.
 - `Unclosed '{' on line 8` : l'accolade ouvrante de la ligne 8 (`} else {`) n'est jamais fermée.
-- `in …/tp05/decision.php on line 11` : PHP a atteint la fin du fichier à la ligne 11 sans trouver la fermeture. Le fichier se termine par un retour à la ligne : sans lui, PHP indiquerait la ligne 10.
+- `in …/tp06/decision.php on line 11` : PHP a atteint la fin du fichier à la ligne 11 sans trouver la fermeture. Le fichier se termine par un retour à la ligne : sans lui, PHP indiquerait la ligne 10.
 
 Remettez la ligne `}` avant `?>`.
 

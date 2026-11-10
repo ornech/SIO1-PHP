@@ -8,13 +8,13 @@
 - expliquer pourquoi une variable créée dans une fonction n'existe pas à l'extérieur ;
 - lire l'erreur « Too few arguments ».
 
-Prérequis : les chapitres 2 à 6. Créez un dossier `tp07` et placez votre terminal dedans.
+Prérequis : les chapitres 3 à 7. Créez un dossier `tp08` et placez votre terminal dedans.
 
 ## Définir et appeler une fonction
 
 Vous avez déjà appelé des fonctions fournies par PHP, comme `strlen()` ou `count()` : ce sont des fonctions **internes**. Une fonction que vous écrivez vous-même est une fonction **personnalisée**. Elle réunit des instructions sous un nom, pour les réutiliser sans les recopier. **Définir** une fonction, c'est l'écrire ; **appeler** une fonction, c'est l'exécuter.
 
-Dans `tp07`, créez un fichier `fonctions.php` :
+Dans `tp08`, créez un fichier `fonctions.php` :
 
 ```php
 <?php
@@ -106,11 +106,11 @@ additionne(1);
 Vous devez voir :
 
 ```text
-PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function additionne(), 1 passed in …/tp07/additionne.php on line 6 and exactly 2 expected in …/tp07/additionne.php:2
+PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function additionne(), 1 passed in …/tp08/additionne.php on line 6 and exactly 2 expected in …/tp08/additionne.php:2
 Stack trace:
-#0 …/tp07/additionne.php(6): additionne()
+#0 …/tp08/additionne.php(6): additionne()
 #1 {main}
-  thrown in …/tp07/additionne.php on line 2
+  thrown in …/tp08/additionne.php on line 2
 ```
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine. Lisez le message :
@@ -203,11 +203,11 @@ Vous devez voir :
 
 ```text
 Je suis dans la fonction
-PHP Warning:  Undefined variable $local in …/tp07/portee.php on line 7
+PHP Warning:  Undefined variable $local in …/tp08/portee.php on line 7
 
 ```
 
-La variable `$local` est **locale** : elle n'existe que pendant l'exécution de la fonction. À la ligne 7, en dehors de la fonction, PHP ne la connaît pas : c'est l'avertissement `Undefined variable` du chapitre 2.
+La variable `$local` est **locale** : elle n'existe que pendant l'exécution de la fonction. À la ligne 7, en dehors de la fonction, PHP ne la connaît pas : c'est l'avertissement `Undefined variable` du chapitre 3.
 
 Le contraire est vrai aussi : une fonction ne voit pas les variables créées à l'extérieur. **Modifiez le fichier `portee.php`** : remplacez tout son contenu par le script suivant.
 
@@ -226,7 +226,7 @@ salut();
 Vous devez voir :
 
 ```text
-PHP Warning:  Undefined variable $nom in …/tp07/portee.php on line 4
+PHP Warning:  Undefined variable $nom in …/tp08/portee.php on line 4
 Salut  !
 ```
 

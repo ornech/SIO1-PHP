@@ -8,7 +8,7 @@
 - appliquer des fonctions à un texte : `strlen()`, `strrev()`, `str_replace()`, `strpos()` ;
 - lire un avertissement « variable non définie ».
 
-Prérequis : le chapitre 1 (écrire et exécuter un script). Créez un dossier `tp02` et placez votre terminal dedans.
+Prérequis : le chapitre 1 (écrire et exécuter un script). Créez un dossier `tp03` et placez votre terminal dedans.
 
 ## Créer une variable
 
@@ -16,7 +16,7 @@ Une **variable** est comme un carton de déménagement. On écrit un nom dessus,
 
 En PHP, on crée une variable en écrivant `$`, un nom, le signe `=` et la valeur. Le signe `=` est l'**opérateur d'affectation** : il place la valeur de droite dans la variable de gauche.
 
-Dans `tp02`, créez un fichier `variables.php` :
+Dans `tp03`, créez un fichier `variables.php` :
 
 ```php
 <?php
@@ -59,14 +59,14 @@ echo $Nom;
 Vous devez voir :
 
 ```text
-PHP Warning:  Undefined variable $Nom in …/tp02/variables.php on line 3
+PHP Warning:  Undefined variable $Nom in …/tp03/variables.php on line 3
 ```
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine. Lisez le message :
 
 - `Warning` : avertissement. Contrairement à l'erreur de syntaxe du chapitre 1, PHP a lu le fichier sans le refuser : il signale le problème à la ligne 3, pendant l'exécution.
 - `Undefined variable $Nom` : la variable `$Nom` n'existe pas.
-- `in …/tp02/variables.php on line 3` : le fichier et la ligne concernés.
+- `in …/tp03/variables.php on line 3` : le fichier et la ligne concernés.
 
 PHP distingue les majuscules des minuscules dans les noms de variables : `$nom` et `$Nom` sont deux variables différentes. Remettez `$nom` à la ligne 3.
 

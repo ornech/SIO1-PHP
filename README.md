@@ -7,22 +7,22 @@ Cours d'introduction à la programmation avec PHP pour des élèves qui découvr
 | Chapitre | Sujet |
 | --- | --- |
 | [1](01-installation-premier-script/README.md) | Installer PHP et écrire un premier script |
-| [2](02-variables-texte-nombres/README.md) | Les variables : texte et nombres |
-| [3](03-calculs-et-mise-a-jour/README.md) | Calculer et mettre à jour une variable |
-| [4](04-tableaux/README.md) | Les tableaux |
-| [5](05-comparer-et-decider/README.md) | Comparer et décider |
-| [6](06-boucles/README.md) | Répéter avec les boucles |
-| [7](07-fonctions/README.md) | Écrire ses propres fonctions |
-| [8](08-serveur-web/README.md) | Le serveur web : une page PHP dans le navigateur |
+| [2](02-serveur-web/README.md) | Le serveur web : une page PHP dans le navigateur |
+| [3](03-variables-texte-nombres/README.md) | Les variables : texte et nombres |
+| [4](04-calculs-et-mise-a-jour/README.md) | Calculer et mettre à jour une variable |
+| [5](05-tableaux/README.md) | Les tableaux |
+| [6](06-comparer-et-decider/README.md) | Comparer et décider |
+| [7](07-boucles/README.md) | Répéter avec les boucles |
+| [8](08-fonctions/README.md) | Écrire ses propres fonctions |
 | [9](09-formulaires-get-post/README.md) | Les formulaires : envoyer des données avec GET et POST |
 | [10](10-tp-notes-csv/README.md) | TP : les notes des étudiants (fichier CSV) |
 | [11](11-tp-notes-json/README.md) | TP : les notes des étudiants (fichier JSON) |
 
 ## Télécharger les PDF
 
-Chaque chapitre existe aussi en PDF, avec un sommaire cliquable, des signets pour naviguer dans le volet latéral du lecteur et des liens internes. Les fichiers sont régénérés automatiquement à chaque mise à jour du cours et publiés dans la release [pdf-latest](https://github.com/ornech/SIO1-PHP/releases/tag/pdf-latest) : un PDF par chapitre, nommé comme le dossier du chapitre (par exemple `02-variables-texte-nombres.pdf`). Pour les générer en local, voir l'en-tête de `outils/pdf.py`.
+Chaque chapitre existe aussi en PDF, avec un sommaire cliquable, des signets pour naviguer dans le volet latéral du lecteur et des liens internes. Les fichiers sont régénérés automatiquement à chaque mise à jour du cours et publiés dans la release [pdf-latest](https://github.com/ornech/SIO1-PHP/releases/tag/pdf-latest) : un PDF par chapitre, nommé comme le dossier du chapitre (par exemple `03-variables-texte-nombres.pdf`). Pour les générer en local, voir l'en-tête de `outils/pdf.py`.
 
-Prérequis : PHP en ligne de commande (la commande `php -v` doit afficher une version). Les chapitres 8 à 11 demandent aussi un serveur Apache avec PHP.
+Prérequis : PHP en ligne de commande (la commande `php -v` doit afficher une version). Les chapitres 2, 9, 10 et 11 demandent aussi un serveur Apache avec PHP.
 
 Versions de référence (celles qui ont servi à exécuter les exemples du cours) :
 

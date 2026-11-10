@@ -8,7 +8,7 @@
 - ajouter ou retirer 1 avec `++` et `--` ;
 - lire l'erreur « division par zéro ».
 
-Prérequis : le chapitre 2 (variables, `echo`, `var_dump()`). Créez un dossier `tp03` et placez votre terminal dedans.
+Prérequis : le chapitre 3 (variables, `echo`, `var_dump()`). Créez un dossier `tp04` et placez votre terminal dedans.
 
 ## Les opérateurs de calcul
 
@@ -23,7 +23,7 @@ Un **opérateur** est un symbole qui combine des valeurs, appelées **opérandes
 | `%` | modulo | le reste de la division entière |
 | `**` | puissance | le premier opérande élevé à la puissance du second |
 
-Dans `tp03`, créez un fichier `calculs.php` :
+Dans `tp04`, créez un fichier `calculs.php` :
 
 ```php
 <?php
@@ -187,17 +187,17 @@ echo $a / $b, "\n";
 Vous devez voir :
 
 ```text
-PHP Fatal error:  Uncaught DivisionByZeroError: Division by zero in …/tp03/division.php:4
+PHP Fatal error:  Uncaught DivisionByZeroError: Division by zero in …/tp04/division.php:4
 Stack trace:
 #0 {main}
-  thrown in …/tp03/division.php on line 4
+  thrown in …/tp04/division.php on line 4
 ```
 
 Lisez le message :
 
 - `Fatal error` : erreur fatale. PHP arrête le script.
 - `Uncaught DivisionByZeroError: Division by zero` : la nature de l'erreur. « Division by zero » signifie « division par zéro ». « Uncaught » signifie que le script ne prévoit rien pour traiter cette erreur.
-- `in …/tp03/division.php:4` : le fichier, puis la ligne (après les deux-points) où l'erreur s'est produite.
+- `in …/tp04/division.php:4` : le fichier, puis la ligne (après les deux-points) où l'erreur s'est produite.
 - `Stack trace: #0 {main}` : le chemin parcouru pour arriver à l'erreur. Ici, l'erreur se trouve directement dans le script principal (`{main}`).
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine.

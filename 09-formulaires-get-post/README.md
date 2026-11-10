@@ -8,7 +8,7 @@
 - afficher une saisie sans risque avec `htmlspecialchars()` ;
 - lire l'avertissement « Undefined array key » et le corriger avec `??`.
 
-Prérequis : les chapitres 4, 6 et 8, et un serveur Apache avec PHP. Créez un dossier `tp09` dans la racine du serveur (`/var/www/html` sous Linux) : tous les fichiers de ce chapitre y sont enregistrés.
+Prérequis : les chapitres 2, 5 et 7, et un serveur Apache avec PHP. Créez un dossier `tp09` dans la racine du serveur (`/var/www/html` sous Linux) : tous les fichiers de ce chapitre y sont enregistrés.
 
 ## Envoyer des données dans l'URL
 
@@ -19,7 +19,7 @@ Une URL peut transporter des données. Après le chemin, un point d'interrogatio
 - `&` sépare les paires ;
 - `prenom=John` est la seconde paire.
 
-Côté PHP, la **super-globale** `$_GET` contient ces paires. Une super-globale est une variable prédéfinie, toujours disponible. `$_GET` est un tableau associatif (chapitre 4) : les clés sont les noms, les valeurs sont celles de l'URL.
+Côté PHP, la **super-globale** `$_GET` contient ces paires. Une super-globale est une variable prédéfinie, toujours disponible. `$_GET` est un tableau associatif (chapitre 5) : les clés sont les noms, les valeurs sont celles de l'URL.
 
 Dans `tp09`, créez un fichier `get.php` :
 
@@ -43,7 +43,7 @@ Vous devez voir :
 Doe
 ```
 
-**Modifiez le fichier `get.php`** : remplacez tout son contenu par le script suivant, qui affiche toutes les paires reçues avec une boucle `foreach` (chapitre 6).
+**Modifiez le fichier `get.php`** : remplacez tout son contenu par le script suivant, qui affiche toutes les paires reçues avec une boucle `foreach` (chapitre 7).
 
 ```php
 <?php

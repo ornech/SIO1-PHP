@@ -8,7 +8,7 @@
 - afficher la fiche d'un étudiant choisi par un paramètre d'URL ;
 - lire l'erreur d'un fichier introuvable.
 
-Prérequis : les chapitres 4 à 9. Créez un dossier `tp10` dans la racine du serveur (`/var/www/html` sous Linux) et placez votre terminal dedans.
+Prérequis : les chapitres 2 et 5 à 9. Créez un dossier `tp10` dans la racine du serveur (`/var/www/html` sous Linux) et placez votre terminal dedans.
 
 Le responsable de la formation veut plus de lisibilité sur les notes de 20 étudiants, qui ont passé trois épreuves écrites notées sur 20. Les notes sont enregistrées dans un fichier CSV.
 
