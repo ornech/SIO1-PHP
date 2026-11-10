@@ -5,10 +5,10 @@
 - créer une variable et afficher sa valeur avec `echo` ;
 - assembler du texte et des variables ;
 - reconnaître le type d'une valeur (texte, entier, décimal, booléen) avec `var_dump()` ;
-- appliquer des fonctions à un texte : `strlen()`, `strrev()`, `str_replace()`, `strpos()` ;
+- appliquer des fonctions à un texte (`strlen()`, `strrev()`, `str_replace()`, `strpos()`) en lisant leur page dans la documentation de PHP ;
 - lire un avertissement « variable non définie ».
 
-Prérequis : le chapitre 1 (écrire et exécuter un script). Créez un dossier `tp03` et placez votre terminal dedans.
+Prérequis : le TP 1 (écrire et exécuter un script). Créez un dossier `tp03` et placez votre terminal dedans.
 
 ## Créer une variable
 
@@ -64,7 +64,7 @@ PHP Warning:  Undefined variable $Nom in …/tp03/variables.php on line 3
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine. Lisez le message :
 
-- `Warning` : avertissement. Contrairement à l'erreur de syntaxe du chapitre 1, PHP a lu le fichier sans le refuser : il signale le problème à la ligne 3, pendant l'exécution.
+- `Warning` : avertissement. Contrairement à l'erreur de syntaxe du TP 1, PHP a lu le fichier sans le refuser : il signale le problème à la ligne 3, pendant l'exécution.
 - `Undefined variable $Nom` : la variable `$Nom` n'existe pas.
 - `in …/tp03/variables.php on line 3` : le fichier et la ligne concernés.
 
@@ -179,7 +179,7 @@ Entre guillemets simples, PHP n'interprète rien : `$nom` et `\n` s'affichent t
 
 ## Les types de valeurs
 
-Une valeur a un **type** : sa nature. Ce chapitre en utilise quatre.
+Une valeur a un **type** : sa nature. Ce TP en utilise quatre.
 
 | Type | Exemple | Signification |
 | --- | --- | --- |
@@ -234,7 +234,7 @@ Vous devez voir :
 8
 ```
 
-Le point colle les deux textes `"3"` et `"5"`. L'opérateur `+` additionne les deux nombres `3` et `5`. Les opérateurs de calcul sont détaillés dans le chapitre suivant.
+Le point colle les deux textes `"3"` et `"5"`. L'opérateur `+` additionne les deux nombres `3` et `5`. Les opérateurs de calcul sont détaillés dans le TP suivant.
 
 > [!NOTE]
 > Texte et addition
@@ -243,7 +243,37 @@ Le point colle les deux textes `"3"` et `"5"`. L'opérateur `+` additionne les d
 
 ## Appliquer des fonctions à un texte
 
-Une **fonction** est une opération déjà écrite, que l'on appelle par son nom en lui donnant des valeurs entre parenthèses, appelées **arguments**. Elle renvoie un résultat que `echo` peut afficher. Créez un fichier `chaines.php` :
+Une **fonction** est une opération déjà écrite, que l'on appelle par son nom en lui donnant des valeurs entre parenthèses, appelées **arguments**. Elle renvoie un résultat que `echo` peut afficher.
+
+Vous n'avez pas à retenir ce que fait chaque fonction, ni les arguments qu'elle attend : tout est décrit dans la **documentation de PHP**, le manuel officiel du langage, disponible en français sur le site php.net. Chaque fonction y a sa propre page. Les quatre fonctions de cette partie sont décrites ici :
+
+- `strlen()` : <https://www.php.net/manual/fr/function.strlen.php>
+- `strrev()` : <https://www.php.net/manual/fr/function.strrev.php>
+- `str_replace()` : <https://www.php.net/manual/fr/function.str-replace.php>
+- `strpos()` : <https://www.php.net/manual/fr/function.strpos.php>
+
+Dans ces adresses, le tiret bas de `str_replace` devient un tiret : `str-replace`.
+
+**Ouvrez la page de `strlen()`.** Toutes les pages de fonctions ont le même plan :
+
+- le titre résume la fonction : « Calcule la taille d'une chaîne » ;
+- **Description** donne la **signature** de la fonction, c'est-à-dire la façon de l'appeler : `function strlen(string $string): int`. Elle se lit ainsi : la fonction `strlen` reçoit un argument de type `string` (un texte), nommé `$string`, et renvoie un `int` (un entier). Le mot `function` signifie « fonction » ;
+- **Liste de paramètres** décrit le rôle de chaque argument. Un **paramètre** est le nom que la documentation donne à un argument attendu ;
+- **Valeurs de retour** dit ce que la fonction renvoie ;
+- **Exemples** propose des scripts à essayer.
+
+**Lisez** la section **Valeurs de retour** de `strlen()`.
+
+Vous devez lire : « La taille de la chaîne string en octets. »
+
+Un **octet** est l'unité qui mesure la place occupée par une donnée en mémoire. Un caractère sans accent en occupe un seul : pour les textes de ce TP, `strlen()` donne donc le nombre de caractères.
+
+> [!NOTE]
+> Réflexe
+>
+> Devant une fonction que vous ne connaissez pas, ouvrez sa page dans la documentation avant de l'utiliser. L'ordre des arguments y est donné par la signature.
+
+Créez un fichier `chaines.php` :
 
 ```php
 <?php
@@ -254,9 +284,9 @@ echo str_replace("a", "b", "abc abc abc"), "\n";
 ?>
 ```
 
-- Ligne 3 : `strlen()` renvoie la longueur du texte, en nombre de caractères.
-- Ligne 4 : `strrev()` renvoie le texte à l'envers.
-- Ligne 5 : `str_replace()` remplace chaque `a` par un `b` dans le texte `"abc abc abc"`. Ses trois arguments sont : le texte cherché, son remplaçant, le texte d'origine.
+- Ligne 3 : `strlen()` renvoie la taille du texte en octets.
+- Ligne 4 : `strrev()` renvoie le texte à l'envers. Sa page de la documentation l'annonce ainsi : « Inverse une chaîne ».
+- Ligne 5 : `str_replace()` remplace chaque `a` par un `b` dans le texte `"abc abc abc"`. Ses trois premiers arguments sont, dans la documentation : `search` (le texte cherché), `replace` (son remplaçant) et `subject` (le texte d'origine). Ouvrez sa page pour le vérifier : la signature donne un quatrième paramètre, `$count`, que ce TP n'utilise pas.
 
 **Prédisez** les trois lignes, puis exécutez `php chaines.php`.
 
@@ -269,6 +299,13 @@ bbc bbc bbc
 ```
 
 Créez maintenant un fichier `position.php`. La fonction `strpos()` renvoie la position de la première occurrence d'un texte dans un autre.
+
+**Ouvrez la page de `strpos()`** et lisez sa signature : `function strpos(string $haystack, string $needle, int $offset = 0): int|false`.
+
+- `$haystack` (« botte de foin ») est le texte dans lequel on cherche ;
+- `$needle` (« aiguille ») est le texte que l'on cherche ;
+- `$offset` est facultatif : `= 0` est sa valeur quand on ne le donne pas. Ce TP ne l'utilise pas ;
+- `int|false` signifie que le résultat est un entier **ou** `false`.
 
 ```php
 <?php
@@ -341,6 +378,8 @@ bool(false)
 ```
 
 Quand le texte n'est pas trouvé, `strpos()` renvoie le booléen `false`. La commande `echo` affiche `false` comme un texte vide : c'est pourquoi la première ligne est vide.
+
+La documentation l'annonçait : la signature se termine par `int|false`, et la section **Valeurs de retour** indique « Retourne false si l'occurrence n'a pas été trouvée. » Elle rappelle aussi que la position commence à 0 et non à 1.
 
 ## Exercice
 

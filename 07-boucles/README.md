@@ -8,7 +8,7 @@
 - parcourir un tableau avec `foreach`, avec ou sans clé ;
 - lire les avertissements d'un `foreach` appliqué à une variable absente.
 
-Prérequis : les chapitres 4, 5 et 6. Créez un dossier `tp07` et placez votre terminal dedans.
+Prérequis : les TP 4, 5 et 6. Créez un dossier `tp07` et placez votre terminal dedans.
 
 ## Répéter tant qu'une condition est vraie : while
 
@@ -29,7 +29,7 @@ while ($x < 5) {
 - Ligne 2 : `$x` vaut 1 au départ.
 - Ligne 3 : `while ($x < 5) {` teste la condition avant chaque itération. Tant qu'elle est vraie, PHP exécute le bloc.
 - Ligne 4 : affiche la valeur de `$x`.
-- Ligne 5 : `$x++` ajoute 1 à `$x` (chapitre 4). Sans cette ligne, la condition resterait vraie pour toujours.
+- Ligne 5 : `$x++` ajoute 1 à `$x` (TP 4). Sans cette ligne, la condition resterait vraie pour toujours.
 
 **Prédisez** combien de lignes le script va afficher, et lesquelles, puis exécutez `php boucle.php`.
 
@@ -230,7 +230,7 @@ PHP Warning:  foreach() argument must be of type array|object, null given in …
 
 Les points de suspension `…` remplacent le début du chemin, qui dépend de votre machine. Lisez les deux messages, qui portent sur la même ligne 3 :
 
-- `Undefined variable $couleur` : la variable `$couleur` n'existe pas, comme au chapitre 3. C'est la cause.
+- `Undefined variable $couleur` : la variable `$couleur` n'existe pas, comme au TP 3. C'est la cause.
 - `foreach() argument must be of type array|object, null given` : `foreach` attend un tableau (ou un objet), et reçoit `null`, la valeur d'une variable qui n'existe pas. C'est la conséquence : le bloc n'est pas exécuté.
 
 > [!WARNING]

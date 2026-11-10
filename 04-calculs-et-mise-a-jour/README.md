@@ -8,7 +8,7 @@
 - ajouter ou retirer 1 avec `++` et `--` ;
 - lire l'erreur « division par zéro ».
 
-Prérequis : le chapitre 3 (variables, `echo`, `var_dump()`). Créez un dossier `tp04` et placez votre terminal dedans.
+Prérequis : le TP 3 (variables, `echo`, `var_dump()`). Créez un dossier `tp04` et placez votre terminal dedans.
 
 ## Les opérateurs de calcul
 

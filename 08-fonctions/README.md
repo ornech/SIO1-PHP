@@ -8,7 +8,7 @@
 - expliquer pourquoi une variable créée dans une fonction n'existe pas à l'extérieur ;
 - lire l'erreur « Too few arguments ».
 
-Prérequis : les chapitres 3 à 7. Créez un dossier `tp08` et placez votre terminal dedans.
+Prérequis : les TP 3 à 7. Créez un dossier `tp08` et placez votre terminal dedans.
 
 ## Définir et appeler une fonction
 
@@ -207,7 +207,7 @@ PHP Warning:  Undefined variable $local in …/tp08/portee.php on line 7
 
 ```
 
-La variable `$local` est **locale** : elle n'existe que pendant l'exécution de la fonction. À la ligne 7, en dehors de la fonction, PHP ne la connaît pas : c'est l'avertissement `Undefined variable` du chapitre 3.
+La variable `$local` est **locale** : elle n'existe que pendant l'exécution de la fonction. À la ligne 7, en dehors de la fonction, PHP ne la connaît pas : c'est l'avertissement `Undefined variable` du TP 3.
 
 Le contraire est vrai aussi : une fonction ne voit pas les variables créées à l'extérieur. **Modifiez le fichier `portee.php`** : remplacez tout son contenu par le script suivant.
 

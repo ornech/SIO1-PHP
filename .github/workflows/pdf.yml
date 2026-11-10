@@ -1,6 +1,6 @@
 name: PDF du cours
 
-# Génère un PDF par chapitre (page de titre, sommaire cliquable, signets, liens internes)
+# Génère un PDF par TP (page de titre, sommaire cliquable, signets, liens internes)
 # et le publie dans la release « pdf-latest » : les adresses de téléchargement
 # restent les mêmes à chaque mise à jour.
 
@@ -50,6 +50,11 @@ jobs:
 
       - name: Installer les dépendances Python
         run: pip install weasyprint==70.0 markdown-it-py==4.2.0 Pygments==2.21.0 pypdf==7.0.0 # versions testées ensemble
+
+      - name: Installer Mermaid CLI (dessin des diagrammes des TP)
+        run: |
+          npm install --prefix "$RUNNER_TEMP/mmdc" --no-audit --no-fund @mermaid-js/mermaid-cli@11.12.0 # télécharge aussi son Chrome
+          echo "$RUNNER_TEMP/mmdc/node_modules/.bin" >> "$GITHUB_PATH"
 
       - name: Générer les PDF
         run: python outils/pdf.py generer . pdf

@@ -1,4 +1,4 @@
-# TP : les notes des étudiants (fichier JSON)
+# Les notes des étudiants avec un fichier JSON
 
 À la fin de ce TP, vous saurez :
 
@@ -8,9 +8,9 @@
 - enregistrer les modifications d'un formulaire dans un fichier avec `file_put_contents()` ;
 - lire l'avertissement « Permission denied » et tester le résultat d'une écriture.
 
-Prérequis : le chapitre 10 et ses fichiers `data.csv`, `liste.php` et `etudiant.php`. Créez un dossier `tp11` dans la racine du serveur (`/var/www/html` sous Linux), copiez-y `data.csv`, et placez votre terminal dedans.
+Prérequis : le TP 10 et ses fichiers `data.csv`, `liste.php` et `etudiant.php`. Créez un dossier `tp11` dans la racine du serveur (`/var/www/html` sous Linux), copiez-y `data.csv`, et placez votre terminal dedans.
 
-Ce TP reprend l'application du chapitre 10 avec une autre source de données : un fichier JSON, plus lisible qu'un fichier CSV, qui peut aussi être réécrit par un formulaire.
+Ce TP reprend l'application du TP 10 avec une autre source de données : un fichier JSON, plus lisible qu'un fichier CSV, qui peut aussi être réécrit par un formulaire.
 
 ## Le format JSON
 
@@ -105,7 +105,7 @@ echo count($etudiants), " étudiants écrits\n";
 ?>
 ```
 
-- Ligne 2 : lit le CSV, comme au chapitre 10.
+- Ligne 2 : lit le CSV, comme au TP 10.
 - Lignes 4 à 10 : construisent, pour chaque ligne du CSV, un tableau associatif avec les clés `prenom`, `nom` et `notes`. Le mot `(int)` placé devant une valeur la convertit en entier : sans lui, les notes seraient écrites comme du texte, `"16"`, et non comme des nombres, `16`.
 - Ligne 11 : `json_encode()` transforme tout le tableau en JSON. L'option `JSON_PRETTY_PRINT` ajoute des retours à la ligne et des retraits pour que le fichier soit lisible. `file_put_contents()` écrit ce texte dans le fichier `data.json`, qu'il crée s'il n'existe pas.
 
@@ -146,7 +146,7 @@ Vous devez voir :
 
 ## Lire le fichier JSON dans les pages
 
-Il faut maintenant que les pages du chapitre 10 lisent `data.json`. Trois changements sont nécessaires dans chaque page : la ligne qui lit les données, puis l'accès au nom, au prénom (`$etudiant["nom"]`, `$etudiant["prenom"]`) et aux notes (`$etudiant["notes"][$i]`).
+Il faut maintenant que les pages du TP 10 lisent `data.json`. Trois changements sont nécessaires dans chaque page : la ligne qui lit les données, puis l'accès au nom, au prénom (`$etudiant["nom"]`, `$etudiant["prenom"]`) et aux notes (`$etudiant["notes"][$i]`).
 
 Dans `tp11`, créez un fichier `liste.php` :
 
@@ -198,7 +198,7 @@ if (!isset($data[$id])) {
 ?>
 ```
 
-**Prédisez** : les pages vont-elles afficher les mêmes résultats qu'au chapitre 10 ? Exécutez la commande suivante, puis affichez la fiche de l'étudiant 1.
+**Prédisez** : les pages vont-elles afficher les mêmes résultats qu'au TP 10 ? Exécutez la commande suivante, puis affichez la fiche de l'étudiant 1.
 
 ```bash
 curl -s http://localhost/tp11/liste.php | sed -n "7,10p"

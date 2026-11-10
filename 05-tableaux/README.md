@@ -8,7 +8,7 @@
 - réunir et comparer deux tableaux avec `+`, `==` et `===` ;
 - lire l'avertissement « Array to string conversion ».
 
-Prérequis : les chapitres 3 et 4. Créez un dossier `tp05` et placez votre terminal dedans.
+Prérequis : les TP 3 et 4. Créez un dossier `tp05` et placez votre terminal dedans.
 
 ## Qu'est-ce qu'un tableau ?
 
@@ -46,7 +46,7 @@ array(3) {
 }
 ```
 
-`array(3)` indique un tableau de 3 éléments. Chaque élément est précédé de son index entre crochets, puis du type et de la valeur, comme au chapitre 3.
+`array(3)` indique un tableau de 3 éléments. Chaque élément est précédé de son index entre crochets, puis du type et de la valeur, comme au TP 3.
 
 > [!NOTE]
 > Autre écriture

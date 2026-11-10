@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Génère et vérifie les PDF du cours : un PDF par chapitre.
+"""Génère et vérifie les PDF du cours : un PDF par TP.
 
-Un chapitre est un dossier « NN-sujet/ » qui contient un README.md et, au besoin, un dossier images/.
+Un TP est un dossier « NN-sujet/ » qui contient un README.md et, au besoin, un dossier images/.
 Chaque PDF contient : une page de titre, un sommaire cliquable avec numéros de page, des signets
 (volet de navigation du lecteur PDF), des liens internes fonctionnels, le code coloré et les encadrés.
 
@@ -10,9 +10,12 @@ Usage :
     python3 outils/pdf.py verifier [dossier_du_depot] [dossier_des_pdf]     (défaut : . et pdf/)
 
 Dépendances : pip install weasyprint==70.0 markdown-it-py==4.2.0 Pygments==2.21.0 pypdf==7.0.0
+Diagrammes : un bloc ```mermaid s'affiche tel quel sur GitHub ; dans le PDF il est dessiné par Mermaid CLI
+(npm install @mermaid-js/mermaid-cli@11.12.0, qui télécharge son propre Chrome). La commande « mmdc » doit être dans le PATH,
+ou indiquée par la variable d'environnement MMDC. Chaque diagramme doit contenir une ligne « accDescr: » : c'est son texte alternatif.
 Sous Linux, WeasyPrint demande aussi Pango et des polices : voir .github/workflows/pdf.yml.
 
-« generer » ÉCHOUE (code de sortie 1) si un lien interne, un lien vers un autre chapitre ou une image est cassé.
+« generer » ÉCHOUE (code de sortie 1) si un lien interne, un lien vers un autre TP ou une image est cassé.
 « verifier » échoue (code de sortie 1) si un PDF ne respecte pas les contrôles listés dans verifier().
 
 Le numéro de version de la page de garde est le dernier tag Git « vX.Y » (le tag « pdf-latest » de la release
@@ -20,6 +23,7 @@ est ignoré) :  git tag -a v1.0 -m "Première version du cours" && git push orig
 Les versions de référence de la page de garde sont lues dans le bloc « Versions de référence » du README racine.
 """
 import re, sys, html, datetime, pathlib, subprocess, unicodedata, logging, warnings
+import base64, hashlib, json, os, shutil, tempfile
 from urllib.parse import unquote  # markdown-it encode les accents des liens (é -> %C3%A9)
 
 # Page de garde et propriétés des PDF (auteur, sujet, mots-clés…).
@@ -94,7 +98,7 @@ def sans_code(texte):
 
 
 def chapitres(repo):
-    """Chapitres du cours : dossiers « NN-sujet/ » contenant un README.md, dans l'ordre des numéros.
+    """TP du cours : dossiers « NN-sujet/ » contenant un README.md, dans l'ordre des numéros.
     Retourne {nom_du_dossier: titre}, le titre étant le premier titre de niveau 1 du README.md."""
     out = {}
     for f in sorted(pathlib.Path(repo).glob("[0-9][0-9]-*/README.md")):
@@ -108,6 +112,40 @@ def fold(text):
     t = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
     t = re.sub(r"[^\w\- ]", "", t.lower()).strip().replace(" ", "-")
     return re.sub(r"-+", "-", t) or "section"
+
+
+# ---------------------------------------------------------------- diagrammes Mermaid
+
+MERMAID_CONFIG = {"theme": "neutral", "htmlLabels": False, "sequence": {"mirrorActors": False, "useMaxWidth": True}}
+
+
+def texte_alternatif_mermaid(code):
+    """Texte alternatif d'un diagramme : la ligne « accDescr: » (champ d'accessibilité natif de Mermaid)."""
+    m = re.search(r"^\s*accDescr\s*:\s*(.+)$", code, re.M)
+    return m.group(1).strip() if m else ""
+
+
+def rendre_mermaid(code):
+    """Dessine un diagramme Mermaid avec Mermaid CLI et retourne le HTML d'une image SVG (avec son texte alternatif)."""
+    alt = texte_alternatif_mermaid(code)
+    if not alt:
+        sys.exit("ERREUR : un diagramme Mermaid n'a pas de ligne « accDescr: » (texte alternatif obligatoire).")
+    commande = os.environ.get("MMDC") or shutil.which("mmdc")
+    if not commande:
+        sys.exit("ERREUR : la commande « mmdc » (Mermaid CLI) est introuvable : npm install @mermaid-js/mermaid-cli@11.12.0")
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = pathlib.Path(tmp)
+        (tmp / "in.mmd").write_text(code, encoding="utf-8")
+        (tmp / "config.json").write_text(json.dumps(MERMAID_CONFIG), encoding="utf-8")
+        (tmp / "puppeteer.json").write_text(json.dumps({"args": ["--no-sandbox"]}), encoding="utf-8")  # sandbox Chrome refusé sur les runners GitHub
+        r = subprocess.run([commande, "-i", str(tmp / "in.mmd"), "-o", str(tmp / "out.svg"),
+                            "-c", str(tmp / "config.json"), "-p", str(tmp / "puppeteer.json"), "--quiet"],
+                           capture_output=True, text=True)
+        if r.returncode != 0 or not (tmp / "out.svg").exists():
+            sys.exit("ERREUR : Mermaid CLI n'a pas pu dessiner le diagramme :\n" + (r.stderr or r.stdout))
+        svg = (tmp / "out.svg").read_bytes()
+    src = "data:image/svg+xml;base64," + base64.b64encode(svg).decode()
+    return f'<pre class="schema"><img src="{src}" alt="{html.escape(alt, quote=True)}"></pre>'
 
 
 # ---------------------------------------------------------------- génération
@@ -133,6 +171,7 @@ blockquote.alert { background: #f6f8fa; break-inside: avoid; color: #1f2328; }
 blockquote.note { border-left-color: #0969da; background: #ddf4ff; } blockquote.warning { border-left-color: #bf8700; background: #fff8c5; }
 .alert-titre { font-weight: bold; margin: 2pt 0; } blockquote.note .alert-titre { color: #0969da; } blockquote.warning .alert-titre { color: #9a6700; }
 img { max-width: 100%; }
+pre.schema { white-space: normal; text-align: center; margin: 8pt 0; break-inside: avoid; }
 .chapitre { break-before: page; } .couverture { padding-top: 28mm; }
 .serie { color: #57606a; font-size: 12pt; margin: 0 0 4pt; text-transform: uppercase; letter-spacing: 1pt; }
 .titre-doc { font-size: 27pt; border: none; string-set: none; margin: 0 0 16mm; }
@@ -151,13 +190,15 @@ def inline_text(tok):
 
 
 def convertir(repo, tp, titre_tp, git, versions, liens_absents):
-    """Markdown d'un chapitre -> document HTML (page de titre, sommaire, contenu)."""
+    """Markdown d'un TP -> document HTML (page de titre, sommaire, contenu)."""
     from markdown_it import MarkdownIt
     from pygments import highlight as pyg_highlight
     from pygments.lexers import get_lexer_by_name, TextLexer
     from pygments.formatters import HtmlFormatter
 
     def hl(code, lang, attrs):
+        if lang == "mermaid":  # diagramme : image SVG dessinée par Mermaid CLI
+            return rendre_mermaid(code)
         try:
             if lang == "php":  # un extrait sans « <?php » est du PHP, pas du texte autour d'un script
                 lexer = get_lexer_by_name("php", startinline="<?" not in code)
@@ -187,7 +228,7 @@ def convertir(repo, tp, titre_tp, git, versions, liens_absents):
         i = 0
         while i < len(tokens):
             t = tokens[i]
-            # ---- titres : identifiants uniques par fichier, un seul H1 par chapitre
+            # ---- titres : identifiants uniques par fichier, un seul H1 par TP
             if t.type == "heading_open":
                 niveau = int(t.tag[1])
                 texte = inline_text(tokens[i + 1])
@@ -230,7 +271,7 @@ def convertir(repo, tp, titre_tp, git, versions, liens_absents):
                             cible = (d / chemin).resolve()
                             if cible.parent == d.resolve() and cible.name in ids:
                                 c.attrSet("href", "#" + ids[cible.name] + (("-" + fold(ancre)) if ancre else ""))
-                            elif cible.suffix == ".md":  # autre chapitre : lien vers GitHub
+                            elif cible.suffix == ".md":  # autre TP : lien vers GitHub
                                 if not cible.exists():
                                     liens_absents.append(f"{tp} : lien vers un fichier absent : {href}")
                                 c.attrSet("href", GITHUB + str(cible.relative_to(repo)))
@@ -291,13 +332,13 @@ def generer(repo, out):
         def emit(self, record):
             self.messages.append(record.getMessage())
 
-    collecteur, liens_absents = Collecteur(), []  # liens_absents : liens vers un autre chapitre dont le fichier n'existe pas
+    collecteur, liens_absents = Collecteur(), []  # liens_absents : liens vers un autre TP dont le fichier n'existe pas
     logging.getLogger("weasyprint").addHandler(collecteur)
     logging.getLogger("weasyprint").setLevel(logging.WARNING)
 
     liste = chapitres(repo)
     if not liste:
-        sys.exit("ERREUR : aucun chapitre trouvé (dossier « NN-sujet/ » contenant un README.md).")
+        sys.exit("ERREUR : aucun TP trouvé (dossier « NN-sujet/ » contenant un README.md).")
     out.mkdir(parents=True, exist_ok=True)
     pyg_css = HtmlFormatter().get_style_defs("pre.code")
     git, versions = infos_git(repo), versions_reference(repo)
@@ -305,7 +346,7 @@ def generer(repo, out):
     for tp, titre in liste.items():
         doc, base, ext = convertir(repo, tp, titre, git, versions, liens_absents)
         pdf = out / f"{tp}.pdf"
-        court = f"Chapitre {int(tp[:2])}"  # « Chapitre 3 »
+        court = f"TP {int(tp[:2])}"  # « TP 3 »
         pied = " · ".join(x for x in (court, version_courte(git), git["court"]) if x)
         css = CSS_TEXTE.replace("__PIED__", pied.replace("\\", "\\\\").replace('"', '\\"'))
         HTML(string=doc, base_url=str(base) + "/").write_pdf(str(pdf), stylesheets=[CSS(string=css + pyg_css)])
@@ -331,7 +372,7 @@ def verifier(repo, pdfs):
     normaliser = lambda t: " ".join(t.split())
     ko = lambda tp, msg: erreurs.append(f"{tp}: {msg}")
     if not liste:
-        erreurs.append("aucun chapitre trouvé (dossier « NN-sujet/ » contenant un README.md)")
+        erreurs.append("aucun TP trouvé (dossier « NN-sujet/ » contenant un README.md)")
 
     for tp, titre in liste.items():
         texte_md = sans_code((repo / tp / "README.md").read_text(encoding="utf-8"))
@@ -343,7 +384,7 @@ def verifier(repo, pdfs):
         if pages < 3:  # page de titre, sommaire, au moins une page de contenu
             ko(tp, f"seulement {pages} page(s)")
 
-        # --- signets (volet de navigation) : le titre du chapitre (premier H1 du README.md)
+        # --- signets (volet de navigation) : le titre du TP (premier H1 du README.md)
         titres = []
         def parcourir(noeuds):
             for x in noeuds:
@@ -388,6 +429,21 @@ def verifier(repo, pdfs):
         if imgs < attendues:
             ko(tp, f"{imgs} image(s) dans le PDF, {attendues} attendue(s)")
 
+        # --- diagrammes Mermaid : texte alternatif présent, diagramme dessiné (ses messages sont du texte dans le PDF),
+        #     et code du diagramme absent du PDF (sinon le bloc n'a pas été converti)
+        brut = (repo / tp / "README.md").read_text(encoding="utf-8")
+        schemas = re.findall(r"^```mermaid\n(.*?)^```", brut, flags=re.S | re.M)
+        for code in schemas:
+            if not texte_alternatif_mermaid(code):
+                ko(tp, "diagramme Mermaid sans « accDescr: » (texte alternatif)")
+            premier = next((re.sub(r"<br\s*/?>", " ", m.group(1)).strip()
+                            for m in re.finditer(r"-{1,2}>>?[+-]?\w+\s*:\s*(.+)", code)), None)
+            if premier and normaliser(premier) not in normaliser(texte):
+                ko(tp, f"diagramme Mermaid non dessiné dans le PDF : message « {premier[:40]} » introuvable")
+            type_diagramme = code.strip().split()[0]
+            if type_diagramme in texte:
+                ko(tp, f"code Mermaid visible dans le PDF : « {type_diagramme} »")
+
         # --- propriétés du PDF (auteur, titre, sujet, mots-clés)
         props = r.metadata or {}
         if props.get("/Author") != META["auteur"]["nom"]:
@@ -408,7 +464,7 @@ def verifier(repo, pdfs):
         if git["court"] not in normaliser(r.pages[1].extract_text()):
             ko(tp, "pied de page : commit absent")
 
-        print(f"{tp}.pdf : {pages} pages, {len(titres)} signets, {internes} liens internes, {imgs} image(s)")
+        print(f"{tp}.pdf : {pages} pages, {len(titres)} signets, {internes} liens internes, {imgs} image(s), {len(schemas)} diagramme(s)")
 
     if erreurs:
         print("\nÉCHEC :", *erreurs, sep="\n  - ")

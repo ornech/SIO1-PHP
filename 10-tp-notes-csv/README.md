@@ -1,4 +1,4 @@
-# TP : les notes des étudiants (fichier CSV)
+# Les notes des étudiants avec un fichier CSV
 
 À la fin de ce TP, vous saurez :
 
@@ -8,7 +8,7 @@
 - afficher la fiche d'un étudiant choisi par un paramètre d'URL ;
 - lire l'erreur d'un fichier introuvable.
 
-Prérequis : les chapitres 2 et 5 à 9. Créez un dossier `tp10` dans la racine du serveur (`/var/www/html` sous Linux) et placez votre terminal dedans.
+Prérequis : les TP 2 et 5 à 9. Créez un dossier `tp10` dans la racine du serveur (`/var/www/html` sous Linux) et placez votre terminal dedans.
 
 Le responsable de la formation veut plus de lisibilité sur les notes de 20 étudiants, qui ont passé trois épreuves écrites notées sur 20. Les notes sont enregistrées dans un fichier CSV.
 
@@ -191,7 +191,7 @@ if (!isset($data[$id])) {
 ?>
 ```
 
-- Ligne 3 : lit le paramètre `id` de l'URL, avec une chaîne vide s'il est absent (chapitre 9).
+- Ligne 3 : lit le paramètre `id` de l'URL, avec une chaîne vide s'il est absent (TP 9).
 - Ligne 4 : `isset($data[$id])` vaut `true` si le tableau contient une entrée à cet index. Le `!` inverse le résultat : le bloc `if` s'exécute quand l'étudiant n'existe pas.
 - Lignes 7 à 13 : affichent le nom, le prénom et les trois notes de l'étudiant choisi.
 
