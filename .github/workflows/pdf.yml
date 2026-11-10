@@ -1,0 +1,79 @@
+name: PDF du cours
+
+# Génère un PDF par chapitre (page de titre, sommaire cliquable, signets, liens internes)
+# et le publie dans la release « pdf-latest » : les adresses de téléchargement
+# restent les mêmes à chaque mise à jour.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"] # un nouveau tag de version régénère les PDF avec ce numéro
+  pull_request:
+    paths:
+      - "[0-9][0-9]-*/**"
+      - "README.md"
+      - "outils/**"
+      - ".github/workflows/pdf.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: pdf-${{ github.ref }}
+  # On n'annule jamais une publication en cours : la release est supprimée puis recréée, et
+  # une annulation entre les deux la laisserait absente. Seules les pull requests sont annulées.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  pdf:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # nécessaire pour mettre à jour la release « pdf-latest »
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # l'historique et les tags servent au numéro de version
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: .github/workflows/pdf.yml # le cache pip change quand les versions ci-dessous changent
+
+      - name: Installer les bibliothèques système (WeasyPrint) et les polices
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
+            fonts-liberation fonts-dejavu-core
+
+      - name: Installer les dépendances Python
+        run: pip install weasyprint==70.0 markdown-it-py==4.2.0 Pygments==2.21.0 pypdf==7.0.0 # versions testées ensemble
+
+      - name: Générer les PDF
+        run: python outils/pdf.py generer . pdf
+
+      - name: Vérifier les PDF (signets, liens, contenu interdit, images)
+        run: python outils/pdf.py verifier . pdf
+
+      - name: Conserver les PDF (artefact de cette exécution)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-du-cours
+          path: pdf/*.pdf
+          if-no-files-found: error
+
+      - name: Publier dans la release « pdf-latest »
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          VERSION=$(git describe --tags --match 'v[0-9]*' 2>/dev/null || echo "non numérotée")
+          NOTES="Version ${VERSION}. Générés automatiquement depuis le commit ${GITHUB_SHA::7}, le $(date -u +%d/%m/%Y) à $(date -u +%H:%M) UTC. Ces fichiers sont remplacés à chaque mise à jour du cours : ne les modifiez pas à la main."
+          # La release est recréée à chaque publication : sa date et son étiquette (tag) suivent
+          # ainsi le dernier commit. Les adresses de téléchargement ne changent pas.
+          gh release delete pdf-latest --cleanup-tag --yes 2>/dev/null || true
+          gh release create pdf-latest pdf/*.pdf --title "PDF du cours (dernière version)" \
+            --notes "$NOTES" --target "$GITHUB_SHA" --latest

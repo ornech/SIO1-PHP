@@ -1,0 +1,10 @@
+# Brouillons et sources de travail (conversion des anciens cours, contrôles)
+travail/
+
+# PDF générés en local (ceux du dépôt sont produits par le workflow GitHub Actions)
+pdf/
+
+CLAUDE.md
+
+# Fichiers temporaires de Python
+__pycache__/
